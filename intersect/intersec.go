@@ -1,6 +1,8 @@
-package intersec
+package intersect
 
-func Intersec(a, b []int) []int {
+// Intersect two arrays
+// Algo complexity O(n+m), O(n + min(n,m))
+func Intersect(a, b []int) []int {
 	if len(a) == 0 || len(b) == 0 {
 		return []int{}
 	}
