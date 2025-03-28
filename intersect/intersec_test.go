@@ -20,12 +20,13 @@ func TestIntersect(t *testing.T) {
 		{a: []int{11, 22, 33, 11, 22}, b: []int{11, 22, 44, 11}, exp: []int{11, 22, 11}},
 	}
 	for n, tt := range tests {
+		// change args should not change result
+
 		t.Run(fmt.Sprintf("direct %d", n), func(t *testing.T) {
 			require.Equal(t, tt.exp, Intersect(tt.a, tt.b))
 		})
 		t.Run(fmt.Sprintf("reverse %d", n), func(t *testing.T) {
 			require.Equal(t, tt.exp, Intersect(tt.b, tt.a))
 		})
-
 	}
 }
