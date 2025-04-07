@@ -1,6 +1,8 @@
 package ordone
 
-import "context"
+import (
+	"context"
+)
 
 func OrDone(ctx context.Context, in <-chan int) <-chan int {
 	res := make(chan int)
@@ -16,7 +18,12 @@ func OrDone(ctx context.Context, in <-chan int) <-chan int {
 				if !ok {
 					return
 				}
-				res <- n
+
+				select {
+				case <-ctx.Done():
+					return
+				case res <- n:
+				}
 			}
 		}
 	}()
