@@ -1,6 +1,6 @@
 package sorting
 
-// SelectionSort sorting by choice method.
+// SelectionSort sorting by selection method.
 // Algo complexity O(N^2), memory O(1).
 func SelectionSort(arr []int) {
 	if len(arr) == 0 {
