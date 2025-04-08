@@ -1,8 +1,8 @@
 package sorting
 
-// ChoiceSort sorting by choice method.
+// SelectionSort sorting by choice method.
 // Algo complexity O(N^2), memory O(1).
-func ChoiceSort(arr []int) {
+func SelectionSort(arr []int) {
 	if len(arr) == 0 {
 		return
 	}
