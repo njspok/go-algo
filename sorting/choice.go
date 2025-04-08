@@ -1,5 +1,7 @@
 package sorting
 
+// ChoiceSort sorting by choice method.
+// Algo complexity O(N^2), memory O(1).
 func ChoiceSort(arr []int) {
 	if len(arr) == 0 {
 		return
@@ -11,9 +13,7 @@ func ChoiceSort(arr []int) {
 		pos, _ := min(sub)
 		pos += cur
 
-		if arr[pos] < arr[cur] {
-			arr[cur], arr[pos] = arr[pos], arr[cur]
-		}
+		arr[cur], arr[pos] = arr[pos], arr[cur]
 	}
 }
 
