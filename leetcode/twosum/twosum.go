@@ -1,5 +1,9 @@
 package twosum
 
+// TwoSum returns the first 2 indexes of the array whose elements are equal to target in total.
+// Algo complexity O(N^2), memory O(1)
+// Problems
+// - sum big integers may overflow
 func TwoSum(arr []int, target int) []int {
 	if len(arr) < 2 {
 		return []int{}

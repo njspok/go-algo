@@ -19,6 +19,7 @@ func Test(t *testing.T) {
 		{arr: []int{3, 2, 4}, target: 6, res: []int{1, 2}},
 		{arr: []int{2, 7, 11, 15}, target: 9, res: []int{0, 1}},
 		{arr: []int{2, 7, 11, 15, 1}, target: 16, res: []int{3, 4}},
+		{arr: []int{-2, 7, 11, +2, 1}, target: 0, res: []int{0, 3}},
 	}
 	for _, tt := range tests {
 		t.Run(fmt.Sprintf("arr: %v target: %d", tt.arr, tt.target), func(t *testing.T) {
