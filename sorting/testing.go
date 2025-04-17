@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/stretchr/testify/require"
 	"slices"
+	"sort"
 	"testing"
 )
 
@@ -22,8 +23,12 @@ func TestSort(t *testing.T, sortFn func([]int)) {
 	}
 	for _, test := range tests {
 		t.Run(fmt.Sprint(test.list), func(t *testing.T) {
+			exp := slices.Clone(test.list)
+			sort.Ints(exp)
+
 			sortFn(test.list)
-			require.True(t, slices.IsSorted(test.list), test.list)
+
+			require.Equal(t, exp, test.list)
 		})
 	}
 }
