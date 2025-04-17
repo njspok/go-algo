@@ -2,6 +2,8 @@ package sorting
 
 import "container/heap"
 
+// PyramidalSort binary heap sort.
+// Algo complexity O(n * log n), mem O(n)
 func PyramidalSort(a []int) {
 	h := IntsHeap(a)
 	heap.Init(&h)
