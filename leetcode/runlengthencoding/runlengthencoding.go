@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+// algo complexity O(c^n)
 func countAndSay(n int) string {
 	if n <= 1 {
 		return "1"
@@ -18,6 +19,7 @@ func countAndSay(n int) string {
 	return res
 }
 
+// algo complexity O(len(str))
 func rle(str string) string {
 	if len(str) == 0 {
 		return ""
