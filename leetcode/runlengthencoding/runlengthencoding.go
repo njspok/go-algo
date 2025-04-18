@@ -1,6 +1,9 @@
 package runlengthencoding
 
-import "strconv"
+import (
+	"strconv"
+	"strings"
+)
 
 func countAndSay(n int) string {
 	if n <= 1 {
@@ -20,22 +23,26 @@ func rle(str string) string {
 		return ""
 	}
 
-	var res string
+	res := strings.Builder{}
+
 	char := str[0]
 	counter := 0
 	for i := 0; i < len(str); i++ {
 		if char == str[i] {
 			counter++
 		} else {
-			res += strconv.Itoa(counter) + string(char)
+			res.WriteString(strconv.Itoa(counter))
+			res.WriteByte(char)
+
 			counter = 1
 			char = str[i]
 		}
 	}
 
 	if counter > 0 {
-		res += strconv.Itoa(counter) + string(char)
+		res.WriteString(strconv.Itoa(counter))
+		res.WriteByte(char)
 	}
 
-	return res
+	return res.String()
 }
