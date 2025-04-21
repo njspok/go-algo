@@ -23,6 +23,11 @@ func (sf *SingleFlight) Do(key string, f func() int) int {
 	sf.mu.RUnlock()
 
 	sf.mu.Lock()
+	if s, ok := sf.queue[key]; ok {
+		sf.mu.Unlock()
+		return s.do(f)
+	}
+
 	s = &single{}
 	sf.queue[key] = s
 	sf.mu.Unlock()
