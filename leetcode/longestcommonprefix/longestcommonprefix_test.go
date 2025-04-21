@@ -24,6 +24,7 @@ func TestLongestCommonPrefix(t *testing.T) {
 		{[]string{"вата", "вино", "вантус"}, "в"},
 		{[]string{"вата", "", "вантус"}, ""},
 		{[]string{"валера", "валентин", "валя"}, "вал"},
+		{[]string{"влад", "влад", "влад"}, "влад"},
 	}
 	for _, tt := range tests {
 		t.Run(fmt.Sprintf("%v", tt.strs), func(t *testing.T) {
