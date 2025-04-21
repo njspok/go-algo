@@ -1,33 +1,38 @@
 package longestcommonprefix
 
-func LongestCommonPrefix(strs []string) string {
-	if len(strs) == 0 {
+// LongestCommonPrefix longest common prefix in array words.
+// Algo complexity O(n*m), where n length of array and m length of first word.
+// Memory O(m).
+func LongestCommonPrefix(words []string) string {
+	if len(words) == 0 {
 		return ""
 	}
 
-	var res string
+	firstWord := []rune(words[0])
 
-	firstWord := strs[0]
+	res := make([]rune, 0, len(firstWord))
 
 	for i := 0; i < len(firstWord); i++ {
 		curChar := firstWord[i]
 
-		for _, str := range strs[1:] {
-			if len(str) == 0 {
+		for _, w := range words[1:] {
+			word := []rune(w)
+
+			if len(word) == 0 {
 				return ""
 			}
 
-			if i == len(str) {
-				return res
+			if i == len(word) {
+				return string(res)
 			}
 
-			if str[i] != curChar {
-				return res
+			if word[i] != curChar {
+				return string(res)
 			}
 		}
 
-		res += string(curChar)
+		res = append(res, curChar)
 	}
 
-	return res
+	return string(res)
 }

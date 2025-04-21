@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func Test(t *testing.T) {
+func TestLongestCommonPrefix(t *testing.T) {
 	tests := []struct {
 		strs   []string
 		result string
@@ -20,7 +20,10 @@ func Test(t *testing.T) {
 		{[]string{"flower", "flow", "flight"}, "fl"},
 		{[]string{"flower", "flow", "flowen"}, "flow"},
 		{[]string{"dog", "racecar", "car"}, ""},
-		//{[]string{"вата", "ваня", "вантус"}, "ва"},
+		{[]string{"вата", "ваня", "вантус"}, "ва"},
+		{[]string{"вата", "вино", "вантус"}, "в"},
+		{[]string{"вата", "", "вантус"}, ""},
+		{[]string{"валера", "валентин", "валя"}, "вал"},
 	}
 	for _, tt := range tests {
 		t.Run(fmt.Sprintf("%v", tt.strs), func(t *testing.T) {
