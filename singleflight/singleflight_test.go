@@ -6,7 +6,9 @@ import (
 	"time"
 )
 
-func TestSingleFligh(t *testing.T) {
+func TestSingleFlight(t *testing.T) {
+	const count = 100
+
 	sf := New()
 
 	result := make(chan int, 4)
@@ -14,7 +16,7 @@ func TestSingleFligh(t *testing.T) {
 	result <- sf.Do("f1", func() int {
 		done := make(chan struct{})
 
-		for range 3 {
+		for range count {
 			go func() {
 				<-done
 				result <- sf.Do("f1", func() int {
@@ -29,9 +31,9 @@ func TestSingleFligh(t *testing.T) {
 	})
 
 	require.Equal(t, 99, <-result)
-	require.Equal(t, 99, <-result)
-	require.Equal(t, 99, <-result)
-	require.Equal(t, 99, <-result)
+	for range count {
+		require.Equal(t, 99, <-result)
+	}
 }
 
 func TestSingle(t *testing.T) {
