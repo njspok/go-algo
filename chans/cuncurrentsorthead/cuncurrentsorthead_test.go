@@ -3,7 +3,9 @@ package cuncurrentsorthead
 import (
 	"bufio"
 	"errors"
+	"fmt"
 	"github.com/stretchr/testify/assert"
+	"slices"
 	"testing"
 )
 
@@ -29,6 +31,7 @@ func ConcurrentSortHead(m int, files ...io.Reader) ([]string, error) {
 	linesCounter := 0
 	for {
 		ready := 0
+		r := make([]string, 0, m)
 		for _, scan := range scans {
 			if scan.Scan() {
 				if scan.Err() != nil {
@@ -36,13 +39,24 @@ func ConcurrentSortHead(m int, files ...io.Reader) ([]string, error) {
 				}
 
 				ready++
+
+				if scan.Text() == "" {
+					continue
+				}
+
 				linesCounter++
-				res = append(res, scan.Text())
+
+				r = append(r, scan.Text())
 				if linesCounter == m {
+					slices.Sort(r)
+					res = append(res, r...)
 					return res, nil
 				}
 			}
 		}
+
+		slices.Sort(r)
+		res = append(res, r...)
 
 		if ready == 0 {
 			break
@@ -122,9 +136,42 @@ func Test(t *testing.T) {
 			},
 			result: []string{"aaa", "bbb", "ccc", "ddd", "eee", "fff"},
 		},
+		{
+			name:   "success",
+			count:  6,
+			errMsg: "",
+			files: []string{
+				"ccc\nfff",
+				"bbb\neee",
+				"aaa\nddd",
+			},
+			result: []string{"aaa", "bbb", "ccc", "ddd", "eee", "fff"},
+		},
+		{
+			name:   "success",
+			count:  6,
+			errMsg: "not enough lines",
+			files: []string{
+				"ccc\n",
+				"bbb\neee",
+				"aaa\nddd",
+			},
+			result: []string{"aaa", "bbb", "ccc", "ddd", "eee"},
+		},
+		{
+			name:   "success",
+			count:  6,
+			errMsg: "not enough lines",
+			files: []string{
+				"ccc\n",
+				"\neee",
+				"aaa\nddd",
+			},
+			result: []string{"aaa", "ccc", "ddd", "eee"},
+		},
 	}
 	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
+		t.Run(fmt.Sprintf("%s count %d", tt.name, tt.count), func(t *testing.T) {
 			var files []io.Reader
 			for _, file := range tt.files {
 				files = append(files, strings.NewReader(file))
