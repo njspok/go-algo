@@ -1,11 +1,8 @@
 package cuncurrentsorthead
 
 import (
-	"bufio"
-	"errors"
 	"fmt"
 	"github.com/stretchr/testify/assert"
-	"slices"
 	"testing"
 )
 
@@ -13,62 +10,6 @@ import (
 	"io"
 	"strings"
 )
-
-func SortHead(m int, files ...io.Reader) ([]string, error) {
-	if m <= 0 {
-		return nil, errors.New("count strings must positive integer")
-	}
-	if len(files) == 0 {
-		return nil, errors.New("no files provided")
-	}
-
-	var scans []*bufio.Scanner
-	for _, file := range files {
-		scans = append(scans, bufio.NewScanner(file))
-	}
-
-	var res []string
-	linesCounter := 0
-	for {
-		ready := 0
-		r := make([]string, 0, m)
-		for _, scan := range scans {
-			if scan.Scan() {
-				if scan.Err() != nil {
-					return nil, scan.Err()
-				}
-
-				ready++
-
-				if scan.Text() == "" {
-					continue
-				}
-
-				linesCounter++
-
-				r = append(r, scan.Text())
-				if linesCounter == m {
-					slices.Sort(r)
-					res = append(res, r...)
-					return res, nil
-				}
-			}
-		}
-
-		slices.Sort(r)
-		res = append(res, r...)
-
-		if ready == 0 {
-			break
-		}
-	}
-
-	if linesCounter < m {
-		return res, errors.New("not enough lines")
-	}
-
-	return res, nil
-}
 
 func TestSortHead(t *testing.T) {
 	tests := []struct {
@@ -116,14 +57,14 @@ func TestSortHead(t *testing.T) {
 		},
 		{
 			name:   "success",
-			count:  1,
+			count:  3,
 			errMsg: "",
 			files: []string{
 				"aaa\nddd",
 				"bbb\neee",
 				"ccc\nfff",
 			},
-			result: []string{"aaa"},
+			result: []string{"aaa", "bbb", "ccc"},
 		},
 		{
 			name:   "success",
@@ -180,15 +121,28 @@ func TestSortHead(t *testing.T) {
 			},
 			result: []string{"aaa", "ccc", "ddd", "eee"},
 		},
+		{
+			name:   "success",
+			count:  100,
+			errMsg: "not enough lines",
+			files: []string{
+				"\n\n\n\n",
+				"\nbbb\n\n",
+				"aaa\nccc",
+			},
+			result: []string{"aaa", "bbb", "ccc"},
+		},
 	}
-	for _, tt := range tests {
-		t.Run(fmt.Sprintf("%s count %d", tt.name, tt.count), func(t *testing.T) {
+	for n, tt := range tests {
+		t.Run(fmt.Sprintf("%d %s count %d", n, tt.name, tt.count), func(t *testing.T) {
 			var files []io.Reader
 			for _, file := range tt.files {
 				files = append(files, strings.NewReader(file))
 			}
 
-			act, err := SortHead(tt.count, files...)
+			//act, err := SortHead(tt.count, files...)
+			act, err := ConcurrencySortHead(tt.count, files...)
+
 			if tt.errMsg != "" {
 				assert.EqualError(t, err, tt.errMsg)
 			} else {
