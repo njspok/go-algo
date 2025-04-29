@@ -14,7 +14,7 @@ import (
 	"strings"
 )
 
-func ConcurrentSortHead(m int, files ...io.Reader) ([]string, error) {
+func SortHead(m int, files ...io.Reader) ([]string, error) {
 	if m <= 0 {
 		return nil, errors.New("count strings must positive integer")
 	}
@@ -70,7 +70,7 @@ func ConcurrentSortHead(m int, files ...io.Reader) ([]string, error) {
 	return res, nil
 }
 
-func Test(t *testing.T) {
+func TestSortHead(t *testing.T) {
 	tests := []struct {
 		name   string
 		count  int
@@ -90,6 +90,17 @@ func Test(t *testing.T) {
 			count:  0,
 			files:  []string{},
 			errMsg: "count strings must positive integer",
+			result: nil,
+		},
+		{
+			name:  "empty files",
+			count: 10,
+			files: []string{
+				"\n",
+				"\n",
+				"\n",
+			},
+			errMsg: "not enough lines",
 			result: nil,
 		},
 		{
@@ -177,9 +188,9 @@ func Test(t *testing.T) {
 				files = append(files, strings.NewReader(file))
 			}
 
-			act, err := ConcurrentSortHead(tt.count, files...)
+			act, err := SortHead(tt.count, files...)
 			if tt.errMsg != "" {
-				assert.Error(t, err, tt.errMsg)
+				assert.EqualError(t, err, tt.errMsg)
 			} else {
 				assert.NoError(t, err)
 			}
