@@ -31,6 +31,10 @@ func ConcurrentSortHead(m int, files ...io.Reader) ([]string, error) {
 		ready := 0
 		for _, scan := range scans {
 			if scan.Scan() {
+				if scan.Err() != nil {
+					return nil, scan.Err()
+				}
+
 				ready++
 				linesCounter++
 				res = append(res, scan.Text())
