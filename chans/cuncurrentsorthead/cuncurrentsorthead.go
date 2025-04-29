@@ -1,3 +1,13 @@
+// Напишите функцию ConcurrentSortHead, которая из files ридеров, которые содержат
+// упорядоченные по возрастанию строки, вернет m первых строк. Чтение из ридеров
+// files должно быть конкурентным.
+//
+// Например:
+// f1 := "aaa\nddd"
+// f2 := "bbb\neee"
+// f3 := "ccc\nfff"
+// ConcurrentSortHead(4, files...) =>  []string{"aaa", "bbb", "ccc", "ddd"}
+
 package cuncurrentsorthead
 
 import (
@@ -20,6 +30,7 @@ func ConcurrencySortHead(m int, files ...io.Reader) ([]string, error) {
 	for _, file := range files {
 		file := file
 		ch := make(chan string)
+
 		go func() {
 			scanner := bufio.NewScanner(bufio.NewReader(file))
 			for scanner.Scan() {
@@ -31,6 +42,7 @@ func ConcurrencySortHead(m int, files ...io.Reader) ([]string, error) {
 
 			close(ch)
 		}()
+
 		chans[ch] = struct{}{}
 	}
 
