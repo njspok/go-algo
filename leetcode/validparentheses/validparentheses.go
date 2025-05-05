@@ -12,6 +12,8 @@ var closeBrace = map[uint8]struct{}{
 	'}': {},
 }
 
+// isValid check open and closed brace is correctly.
+// Algo complexity O(len(s)), mem O(len(s)).
 func isValid(s string) bool {
 	if len(s) == 0 {
 		return false
