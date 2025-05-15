@@ -24,9 +24,12 @@ func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
 
 	res := copyList(list1)
 
-	one := list2
+	cur := list2
 
-	res = placeNode(one, res)
+	for cur != nil {
+		res = placeNode(cur, res)
+		cur = cur.Next
+	}
 
 	return res
 }
@@ -69,6 +72,7 @@ func placeNode(node *ListNode, list *ListNode) *ListNode {
 		prev = cur
 		cur = cur.Next
 	}
+
 	return list
 }
 
@@ -86,8 +90,9 @@ func Test(t *testing.T) {
 		{a: []int{1, 2, 3}, b: []int{2}, result: []int{1, 2, 2, 3}},
 		{a: []int{1, 2, 3}, b: []int{3}, result: []int{1, 2, 3, 3}},
 		{a: []int{1, 2, 3}, b: []int{4}, result: []int{1, 2, 3, 4}},
-		//{a: []int{1, 2, 3}, b: []int{4, 5, 6}, result: []int{1, 2, 3, 4, 5, 6}},
-		//{a: []int{4, 5, 6}, b: []int{1, 2, 3}, result: []int{1, 2, 3, 4, 5, 6}},
+		{a: []int{1, 2, 3}, b: []int{4, 5}, result: []int{1, 2, 3, 4, 5}},
+		{a: []int{1, 2, 3}, b: []int{4, 5, 6}, result: []int{1, 2, 3, 4, 5, 6}},
+		{a: []int{4, 5, 6}, b: []int{1, 2, 3}, result: []int{1, 2, 3, 4, 5, 6}},
 	}
 	for n, tt := range tests {
 		t.Run(strconv.Itoa(n), func(t *testing.T) {
