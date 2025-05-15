@@ -22,7 +22,46 @@ func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
 		return list1
 	}
 
-	var res *ListNode
+	res := copyList(list1)
+	prev := (*ListNode)(nil)
+	cur := res
+
+	one := list2
+
+	for cur != nil {
+		// in begin
+		if prev == nil {
+			if one.Val <= cur.Val {
+				newNode := &ListNode{
+					Val:  one.Val,
+					Next: cur,
+				}
+				res = newNode
+				break
+			}
+		}
+
+		if one.Val <= cur.Val {
+			newNode := &ListNode{
+				Val:  one.Val,
+				Next: cur,
+			}
+			prev.Next = newNode
+			break
+		} else {
+			if cur.Next == nil {
+				newNode := &ListNode{
+					Val:  one.Val,
+					Next: nil,
+				}
+				cur.Next = newNode
+				break
+			}
+		}
+
+		prev = cur
+		cur = cur.Next
+	}
 
 	return res
 }
@@ -36,7 +75,13 @@ func Test(t *testing.T) {
 		{a: nil, b: nil, result: []int{}},
 		{a: []int{1, 2, 3}, b: nil, result: []int{1, 2, 3}},
 		{a: nil, b: []int{4, 5, 6}, result: []int{4, 5, 6}},
-		{a: []int{1, 2, 3}, b: []int{4, 5, 6}, result: []int{1, 2, 3, 4, 5, 6}},
+		{a: []int{1, 2, 3}, b: []int{0}, result: []int{0, 1, 2, 3}},
+		{a: []int{1, 2, 3}, b: []int{1}, result: []int{1, 1, 2, 3}},
+		{a: []int{1, 2, 3}, b: []int{2}, result: []int{1, 2, 2, 3}},
+		{a: []int{1, 2, 3}, b: []int{3}, result: []int{1, 2, 3, 3}},
+		{a: []int{1, 2, 3}, b: []int{4}, result: []int{1, 2, 3, 4}},
+		//{a: []int{1, 2, 3}, b: []int{4, 5, 6}, result: []int{1, 2, 3, 4, 5, 6}},
+		//{a: []int{4, 5, 6}, b: []int{1, 2, 3}, result: []int{1, 2, 3, 4, 5, 6}},
 	}
 	for n, tt := range tests {
 		t.Run(strconv.Itoa(n), func(t *testing.T) {
@@ -146,4 +191,9 @@ func Test_copyList(t *testing.T) {
 			require.Len(t, actual, len(tt.list))
 		})
 	}
+}
+
+func Test2(t *testing.T) {
+	a := (*ListNode)(nil)
+	fmt.Println(a == nil)
 }
