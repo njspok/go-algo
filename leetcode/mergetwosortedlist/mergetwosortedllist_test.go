@@ -23,27 +23,34 @@ func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
 	}
 
 	res := copyList(list1)
-	prev := (*ListNode)(nil)
-	cur := res
 
 	one := list2
+
+	res = placeNode(one, res)
+
+	return res
+}
+
+func placeNode(node *ListNode, list *ListNode) *ListNode {
+	cur := list
+	prev := (*ListNode)(nil)
 
 	for cur != nil {
 		// in begin
 		if prev == nil {
-			if one.Val <= cur.Val {
+			if node.Val <= cur.Val {
 				newNode := &ListNode{
-					Val:  one.Val,
+					Val:  node.Val,
 					Next: cur,
 				}
-				res = newNode
+				list = newNode
 				break
 			}
 		}
 
-		if one.Val <= cur.Val {
+		if node.Val <= cur.Val {
 			newNode := &ListNode{
-				Val:  one.Val,
+				Val:  node.Val,
 				Next: cur,
 			}
 			prev.Next = newNode
@@ -51,7 +58,7 @@ func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
 		} else {
 			if cur.Next == nil {
 				newNode := &ListNode{
-					Val:  one.Val,
+					Val:  node.Val,
 					Next: nil,
 				}
 				cur.Next = newNode
@@ -62,8 +69,7 @@ func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
 		prev = cur
 		cur = cur.Next
 	}
-
-	return res
+	return list
 }
 
 func Test(t *testing.T) {
