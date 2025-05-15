@@ -13,23 +13,35 @@ type ListNode struct {
 }
 
 func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
-	// todo implement
-	return nil
+	if list1 == nil {
+		if list2 == nil {
+			return nil
+		}
+		return list2
+	} else if list2 == nil {
+		return list1
+	}
+
+	var res *ListNode
+
+	return res
 }
 
 func Test(t *testing.T) {
 	tests := []struct {
-		a      *ListNode
-		b      *ListNode
+		a      []int
+		b      []int
 		result []int
 	}{
 		{a: nil, b: nil, result: []int{}},
-		{a: nil, b: nil, result: []int{}},
+		{a: []int{1, 2, 3}, b: nil, result: []int{1, 2, 3}},
+		{a: nil, b: []int{4, 5, 6}, result: []int{4, 5, 6}},
+		{a: []int{1, 2, 3}, b: []int{4, 5, 6}, result: []int{1, 2, 3, 4, 5, 6}},
 	}
 	for n, tt := range tests {
 		t.Run(strconv.Itoa(n), func(t *testing.T) {
-			res := mergeTwoLists(tt.a, tt.b)
-			actual := toSlice(res)
+			res := mergeTwoLists(makeList(tt.a), makeList(tt.b))
+			actual := listToSlice(res)
 			require.Equal(t, tt.result, actual)
 		})
 	}
@@ -62,7 +74,32 @@ func makeList(s []int) *ListNode {
 	return res[0]
 }
 
-func toSlice(head *ListNode) []int {
+func copyList(list *ListNode) *ListNode {
+	var res *ListNode
+	prev := res
+
+	cur := list
+	for cur != nil {
+		newNode := &ListNode{
+			Val:  cur.Val,
+			Next: nil,
+		}
+
+		if prev == nil {
+			res = newNode
+			prev = res
+		} else {
+			prev.Next = newNode
+			prev = prev.Next
+		}
+
+		cur = cur.Next
+	}
+
+	return res
+}
+
+func listToSlice(head *ListNode) []int {
 	if head == nil {
 		return []int{}
 	}
@@ -75,7 +112,7 @@ func toSlice(head *ListNode) []int {
 	return res
 }
 
-func TestMakeList(t *testing.T) {
+func Test_makeList(t *testing.T) {
 	tests := [][]int{
 		{},
 		{1},
@@ -84,8 +121,29 @@ func TestMakeList(t *testing.T) {
 	for _, test := range tests {
 		t.Run(fmt.Sprintf("%v", test), func(t *testing.T) {
 			list := makeList(test)
-			actual := toSlice(list)
+			actual := listToSlice(list)
 			require.Equal(t, test, actual)
+			require.Len(t, actual, len(test))
+		})
+	}
+}
+
+func Test_copyList(t *testing.T) {
+	tests := []struct {
+		list   []int
+		result []int
+	}{
+		{list: nil, result: []int{}},
+		{list: []int{1}, result: []int{1}},
+		{list: []int{1, 2, 3}, result: []int{1, 2, 3}},
+	}
+	for _, tt := range tests {
+		t.Run(fmt.Sprintf("%v", tt.list), func(t *testing.T) {
+			list := makeList(tt.list)
+			res := copyList(list)
+			actual := listToSlice(res)
+			require.Equal(t, tt.result, actual)
+			require.Len(t, actual, len(tt.list))
 		})
 	}
 }
