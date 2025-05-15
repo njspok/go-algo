@@ -6,65 +6,28 @@ type ListNode struct {
 }
 
 func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
-	if list1 == nil {
-		if list2 == nil {
-			return nil
-		}
-		return list2
-	} else if list2 == nil {
-		return list1
-	}
+	dummy := &ListNode{}
+	tail := dummy
 
-	res := copyList(list1)
-
-	cur := list2
-
-	for cur != nil {
-		res = placeNode(cur, res)
-		cur = cur.Next
-	}
-
-	return res
-}
-
-func placeNode(node *ListNode, list *ListNode) *ListNode {
-	cur := list
-	prev := (*ListNode)(nil)
-
-	for cur != nil {
-		// in begin
-		if prev == nil {
-			if node.Val <= cur.Val {
-				newNode := &ListNode{
-					Val:  node.Val,
-					Next: cur,
-				}
-				list = newNode
-				break
-			}
-		}
-
-		if node.Val <= cur.Val {
-			newNode := &ListNode{
-				Val:  node.Val,
-				Next: cur,
-			}
-			prev.Next = newNode
-			break
+	for list1 != nil && list2 != nil {
+		if list1.Val <= list2.Val {
+			tail.Next = list1
+			list1 = list1.Next
 		} else {
-			if cur.Next == nil {
-				newNode := &ListNode{
-					Val:  node.Val,
-					Next: nil,
-				}
-				cur.Next = newNode
-				break
-			}
+			tail.Next = list2
+			list2 = list2.Next
 		}
 
-		prev = cur
-		cur = cur.Next
+		tail = tail.Next
 	}
 
-	return list
+	if list1 != nil {
+		tail.Next = list1
+	}
+
+	if list2 != nil {
+		tail.Next = list2
+	}
+
+	return dummy.Next
 }
