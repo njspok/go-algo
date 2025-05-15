@@ -93,6 +93,7 @@ func Test(t *testing.T) {
 		{a: []int{1, 2, 3}, b: []int{4, 5}, result: []int{1, 2, 3, 4, 5}},
 		{a: []int{1, 2, 3}, b: []int{4, 5, 6}, result: []int{1, 2, 3, 4, 5, 6}},
 		{a: []int{4, 5, 6}, b: []int{1, 2, 3}, result: []int{1, 2, 3, 4, 5, 6}},
+		{a: []int{1, 2, 4}, b: []int{1, 3, 4}, result: []int{1, 1, 2, 3, 4, 4}},
 	}
 	for n, tt := range tests {
 		t.Run(strconv.Itoa(n), func(t *testing.T) {
