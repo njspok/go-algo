@@ -6,6 +6,7 @@ import (
 	"testing"
 )
 
+// Algo complexity O(n), O(1) by mem.
 func removeDuplicates(nums []int) int {
 	if len(nums) <= 1 {
 		return len(nums)
