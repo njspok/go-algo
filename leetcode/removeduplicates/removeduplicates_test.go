@@ -3,35 +3,11 @@ package removeduplicates
 import (
 	"fmt"
 	"github.com/stretchr/testify/require"
-	"sort"
 	"testing"
 )
 
 func removeDuplicates(nums []int) int {
-	if len(nums) == 0 {
-		return 0
-	}
 
-	unique := make(map[int]struct{})
-
-	for _, v := range nums {
-		if _, ok := unique[v]; !ok {
-			unique[v] = struct{}{}
-			continue
-		}
-	}
-
-	var res []int
-	for k := range unique {
-		res = append(res, k)
-	}
-	sort.Slice(res, func(i, j int) bool { return res[i] < res[j] })
-
-	for n, v := range res {
-		nums[n] = v
-	}
-
-	return len(res)
 }
 
 func Test(t *testing.T) {
