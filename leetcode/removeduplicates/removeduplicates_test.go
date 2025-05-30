@@ -7,7 +7,30 @@ import (
 )
 
 func removeDuplicates(nums []int) int {
+	if len(nums) <= 1 {
+		return len(nums)
+	}
 
+	a := 0
+	b := 1
+	for b < len(nums) {
+		if nums[a] == nums[b] {
+			b++
+			continue
+		}
+
+		if (b - a) == 1 {
+			a++
+			b++
+			continue
+		}
+
+		a++
+		nums[a] = nums[b]
+		b++
+	}
+
+	return a + 1
 }
 
 func Test(t *testing.T) {
