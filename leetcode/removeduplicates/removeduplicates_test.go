@@ -13,6 +13,7 @@ func Test(t *testing.T) {
 		k    int
 	}{
 		{nums: []int{}, want: []int{}, k: 0},
+		{nums: []int{1, 2, 3, 4, 5}, want: []int{1, 2, 3, 4, 5}, k: 5},
 		{nums: []int{1, 1, 1, 2, 2, 2, 3}, want: []int{1, 2, 3}, k: 3},
 		{nums: []int{0, 0, 1, 1, 1, 2, 2, 3, 3, 4}, want: []int{0, 1, 2, 3, 4}, k: 5},
 	}
