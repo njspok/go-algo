@@ -10,7 +10,7 @@ func strStr(haystack string, needle string) int {
 			return -1
 		}
 
-		if d := diff(haystack[i:i+len(needle)], needle); d >= 0 {
+		if d := diffPos(haystack[i:i+len(needle)], needle); d >= 0 {
 			i += d + 1
 			continue
 		}
@@ -22,7 +22,8 @@ func strStr(haystack string, needle string) int {
 
 // >=0 position where str1 diff str2
 // -1 if str1 == str2
-func diff(str1, str2 string) int {
+// str1 must equal len str2
+func diffPos(str1, str2 string) int {
 	for i := range str1 {
 		if str1[i] != str2[i] {
 			return i
