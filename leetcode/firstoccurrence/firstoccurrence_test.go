@@ -31,6 +31,7 @@ func Test(t *testing.T) {
 		{haystack: "helololollo", needle: "llod", res: -1},
 		{haystack: "121212121212123", needle: "123", res: 12},
 		{haystack: "aaaaaab", needle: "aab", res: 4},
+		{haystack: "aabc", needle: "abc", res: 4},
 	}
 	for n, tt := range tests {
 		t.Run(strconv.Itoa(n), func(t *testing.T) {
