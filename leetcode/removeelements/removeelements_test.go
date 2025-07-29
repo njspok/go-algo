@@ -24,40 +24,44 @@ func removeElementTrivial(nums []int, val int) int {
 
 func removeElement(nums []int, val int) int {
 
-	dropOneElement := func(list []int, val int, k int) bool {
+	dropOneElement := func(list []int, val int, begin, end int) int {
 		if len(list) == 0 {
-			return false
+			return -1
 		}
 
-		delPos := -1
+		delFirstPos := -1
 		movePos := -1
-		for i := 0; i < k; i++ {
-			if list[i] == val {
-				delPos = i
+
+		for i := begin; i < end; i++ {
+			if list[i] == val && delFirstPos == -1 {
+				delFirstPos = i
 			} else {
 				movePos = i
 			}
 		}
 
-		if delPos == -1 {
-			return false
+		if delFirstPos == -1 {
+			return -1
 		}
 
 		if movePos == -1 {
-			return true
+			return delFirstPos
 		}
 
-		list[delPos] = list[movePos]
+		list[delFirstPos] = list[movePos]
 
-		return true
+		return delFirstPos
 	}
 
 	k := len(nums)
-	for dropOneElement(nums, val, k) {
+	delPos := 0
+	for {
+		delPos = dropOneElement(nums, val, delPos, k)
+		if delPos == -1 {
+			return k
+		}
 		k--
 	}
-
-	return k
 }
 
 func Test(t *testing.T) {
@@ -69,13 +73,16 @@ func Test(t *testing.T) {
 	}{
 		{nums: nil, val: 0, act: []int{}, k: 0},
 		{nums: []int{1}, val: 1, act: []int{}, k: 0},
+		{nums: []int{1, 1}, val: 1, act: []int{}, k: 0},
 		{nums: []int{1, 2, 3, 4, 5}, val: -1, act: []int{1, 2, 3, 4, 5}, k: 5},
 		{nums: []int{5, 4, 3, 2, 1}, val: -1, act: []int{1, 2, 3, 4, 5}, k: 5},
 		{nums: []int{1, 2, 3, 4, 5}, val: 1, act: []int{2, 3, 4, 5}, k: 4},
+		{nums: []int{1, 2, 3, 4, 5}, val: 4, act: []int{1, 2, 3, 5}, k: 4},
 		{nums: []int{1, 2, 3, 4, 5}, val: 5, act: []int{1, 2, 3, 4}, k: 4},
 		{nums: []int{1, 1, 2, 3, 4}, val: 1, act: []int{2, 3, 4}, k: 3},
 		{nums: []int{1, 2, 3, 4, 2}, val: 2, act: []int{1, 3, 4}, k: 3},
 		{nums: []int{0, 1, 2, 2, 3, 0, 4, 2}, val: 2, act: []int{0, 0, 1, 3, 4}, k: 5},
+		{nums: []int{0, 1, 2, 2, 3, 0, 4, 2, 2}, val: 2, act: []int{0, 0, 1, 3, 4}, k: 5},
 	}
 	for _, test := range tests {
 		t.Run(fmt.Sprintf("%v", test.nums), func(t *testing.T) {
