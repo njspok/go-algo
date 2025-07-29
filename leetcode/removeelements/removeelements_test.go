@@ -22,6 +22,44 @@ func removeElementTrivial(nums []int, val int) int {
 	return len(nums)
 }
 
+func removeElement(nums []int, val int) int {
+
+	dropOneElement := func(list []int, val int, k int) bool {
+		if len(list) == 0 {
+			return false
+		}
+
+		delPos := -1
+		movePos := -1
+		for i := 0; i < k; i++ {
+			if list[i] == val {
+				delPos = i
+			} else {
+				movePos = i
+			}
+		}
+
+		if delPos == -1 {
+			return false
+		}
+
+		if movePos == -1 {
+			return true
+		}
+
+		list[delPos] = list[movePos]
+
+		return true
+	}
+
+	k := len(nums)
+	for dropOneElement(nums, val, k) {
+		k--
+	}
+
+	return k
+}
+
 func Test(t *testing.T) {
 	tests := []struct {
 		nums []int
@@ -30,6 +68,7 @@ func Test(t *testing.T) {
 		k    int
 	}{
 		{nums: nil, val: 0, act: []int{}, k: 0},
+		{nums: []int{1}, val: 1, act: []int{}, k: 0},
 		{nums: []int{1, 2, 3, 4, 5}, val: -1, act: []int{1, 2, 3, 4, 5}, k: 5},
 		{nums: []int{5, 4, 3, 2, 1}, val: -1, act: []int{1, 2, 3, 4, 5}, k: 5},
 		{nums: []int{1, 2, 3, 4, 5}, val: 1, act: []int{2, 3, 4, 5}, k: 4},
@@ -41,7 +80,7 @@ func Test(t *testing.T) {
 	for _, test := range tests {
 		t.Run(fmt.Sprintf("%v", test.nums), func(t *testing.T) {
 			nums := slices.Clone(test.nums)
-			k := removeElementTrivial(nums, test.val)
+			k := removeElement(nums, test.val)
 			act := make([]int, 0, k)
 			for i := 0; i < k; i++ {
 				act = append(act, nums[i])
