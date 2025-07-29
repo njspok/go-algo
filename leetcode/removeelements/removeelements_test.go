@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func removeElement(nums []int, val int) int {
+func removeElementTrivial(nums []int, val int) int {
 	i := 0
 	for i < len(nums) {
 		if nums[i] != val {
@@ -41,7 +41,7 @@ func Test(t *testing.T) {
 	for _, test := range tests {
 		t.Run(fmt.Sprintf("%v", test.nums), func(t *testing.T) {
 			nums := slices.Clone(test.nums)
-			k := removeElement(nums, test.val)
+			k := removeElementTrivial(nums, test.val)
 			act := make([]int, 0, k)
 			for i := 0; i < k; i++ {
 				act = append(act, nums[i])
