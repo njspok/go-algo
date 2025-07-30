@@ -8,6 +8,18 @@ import (
 	"testing"
 )
 
+func removeElement(nums []int, val int) int {
+	var k int
+	for i := 0; i < len(nums); i++ {
+		nums[k] = nums[i]
+
+		if nums[i] != val {
+			k++
+		}
+	}
+	return k
+}
+
 func removeElementTrivial(nums []int, val int) int {
 	i := 0
 	for i < len(nums) {
@@ -22,48 +34,6 @@ func removeElementTrivial(nums []int, val int) int {
 	return len(nums)
 }
 
-func removeElement(nums []int, val int) int {
-
-	dropOneElement := func(list []int, val int, begin, end int) int {
-		if len(list) == 0 {
-			return -1
-		}
-
-		delFirstPos := -1
-		movePos := -1
-
-		for i := begin; i < end; i++ {
-			if list[i] == val && delFirstPos == -1 {
-				delFirstPos = i
-			} else {
-				movePos = i
-			}
-		}
-
-		if delFirstPos == -1 {
-			return -1
-		}
-
-		if movePos == -1 {
-			return delFirstPos
-		}
-
-		list[delFirstPos] = list[movePos]
-
-		return delFirstPos
-	}
-
-	k := len(nums)
-	delPos := 0
-	for {
-		delPos = dropOneElement(nums, val, delPos, k)
-		if delPos == -1 {
-			return k
-		}
-		k--
-	}
-}
-
 func Test(t *testing.T) {
 	tests := []struct {
 		nums []int
@@ -74,6 +44,8 @@ func Test(t *testing.T) {
 		{nums: nil, val: 0, act: []int{}, k: 0},
 		{nums: []int{1}, val: 1, act: []int{}, k: 0},
 		{nums: []int{1, 1}, val: 1, act: []int{}, k: 0},
+		{nums: []int{1, 2}, val: 1, act: []int{2}, k: 1},
+		{nums: []int{0, 1}, val: 1, act: []int{0}, k: 1},
 		{nums: []int{1, 2, 3, 4, 5}, val: -1, act: []int{1, 2, 3, 4, 5}, k: 5},
 		{nums: []int{5, 4, 3, 2, 1}, val: -1, act: []int{1, 2, 3, 4, 5}, k: 5},
 		{nums: []int{1, 2, 3, 4, 5}, val: 1, act: []int{2, 3, 4, 5}, k: 4},
@@ -85,7 +57,7 @@ func Test(t *testing.T) {
 		{nums: []int{0, 1, 2, 2, 3, 0, 4, 2, 2}, val: 2, act: []int{0, 0, 1, 3, 4}, k: 5},
 	}
 	for _, test := range tests {
-		t.Run(fmt.Sprintf("%v", test.nums), func(t *testing.T) {
+		t.Run(fmt.Sprintf("%v %d", test.nums, test.val), func(t *testing.T) {
 			nums := slices.Clone(test.nums)
 			k := removeElement(nums, test.val)
 			act := make([]int, 0, k)
