@@ -51,7 +51,7 @@ func download(urls []string) ([]string, error) {
 		r := <-ch
 		if r.err != nil {
 
-			// goog, but not work interface{Unwrap() []errors} !!!
+			// good, but not work interface{Unwrap() []errors} !!!
 			//err = errors.Join(err, r.err)
 
 			errs = append(errs, r.err)
