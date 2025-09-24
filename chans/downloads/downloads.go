@@ -50,7 +50,10 @@ func download(urls []string) ([]string, error) {
 	for i := 0; i < len(urls); i++ {
 		r := <-ch
 		if r.err != nil {
+
+			// goog, but not work interface{Unwrap() []errors} !!!
 			//err = errors.Join(err, r.err)
+
 			errs = append(errs, r.err)
 		} else {
 			res = append(res, r.msg)
