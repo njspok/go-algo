@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func TestPropertyBased(t *testing.T) {
+func Test(t *testing.T) {
 	for range 50 {
 		// Arrange
 		table := []struct {
