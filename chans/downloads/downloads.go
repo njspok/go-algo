@@ -44,12 +44,14 @@ func download(urls []string) ([]string, error) {
 	}
 
 	var res []string
-	var err error
+	var errs []error
+	//var err error
 
 	for i := 0; i < len(urls); i++ {
 		r := <-ch
 		if r.err != nil {
-			err = errors.Join(err, r.err)
+			//err = errors.Join(err, r.err)
+			errs = append(errs, r.err)
 		} else {
 			res = append(res, r.msg)
 		}
@@ -57,5 +59,7 @@ func download(urls []string) ([]string, error) {
 
 	close(ch)
 
-	return res, err
+	//return res, err
+
+	return res, errors.Join(errs...)
 }
