@@ -75,3 +75,54 @@ func Test(t *testing.T) {
 		}
 	}
 }
+
+func Test2(t *testing.T) {
+	for range 50 {
+		// Arrange
+		urls := []string{
+			"https://example.com/a.xml",
+			"https://example.com/b.xml",
+			"https://example.com/c.xml",
+			"https://example.com/d.xml",
+			"https://example.com/e.xml",
+		}
+
+		// Act
+		res, err := download(urls)
+
+		// Assert
+		total := make([]string, 0, len(urls))
+
+		total = append(total, res...)
+
+		if err != nil {
+			list := err.(interface{ Unwrap() []error }).Unwrap()
+			for _, err := range list {
+				total = append(total, err.Error())
+			}
+		}
+
+		require.Equal(t, len(urls), len(total))
+
+		for _, url := range urls {
+			switch repeatedTimes(total, url) {
+			case 0:
+				require.Failf(t, "url must be in result", "%s", url)
+			case 1:
+				continue
+			default:
+				require.Failf(t, "url must be only 1 times in result", "%s", url)
+			}
+		}
+	}
+}
+
+func repeatedTimes(list []string, element string) int {
+	res := 0
+	for _, el := range list {
+		if strings.Contains(el, element) {
+			res++
+		}
+	}
+	return res
+}
