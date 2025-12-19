@@ -1,8 +1,13 @@
 package plusone
 
 func plusOne(digits []int) []int {
+	if len(digits) == 0 {
+		return digits
+	}
+
 	flag := false
 	for i := len(digits) - 1; i >= 0; i-- {
+		// check lowest digit
 		if i == len(digits)-1 {
 			digits[i] += 1
 		}
@@ -16,11 +21,11 @@ func plusOne(digits []int) []int {
 			digits[i] = 0
 			flag = true
 		}
+
+		if !flag {
+			return digits
+		}
 	}
 
-	if flag {
-		return append([]int{1}, digits...)
-	}
-
-	return digits
+	return append([]int{1}, digits...)
 }
