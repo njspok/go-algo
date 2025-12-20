@@ -57,7 +57,7 @@ func Test(t *testing.T) {
 			result: false,
 		},
 		{
-			name: "2 level different permutation trees ",
+			name: "2 level different permutation trees",
 			p: &TreeNode{
 				Val:   1,
 				Left:  &TreeNode{Val: 3},
