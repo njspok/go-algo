@@ -7,6 +7,9 @@ type TreeNode struct {
 }
 
 // recursion version
+// complexity
+// - memory with recurstion stack O(log n) for balanced tree, O(n) not balanced
+// - time O(n) if tree equal structure or O(min(p,q))
 func isSameTree(p *TreeNode, q *TreeNode) bool {
 	if p == nil && q == nil {
 		return true
