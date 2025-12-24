@@ -2,7 +2,7 @@ package firstuniqcharinstring
 
 // Complexity
 // - time O(n)
-// - memory O(1), abc limited count chars in table
+// - memory O(n)
 func firstUniqChar(s string) int {
 	if len(s) == 0 {
 		return -1
@@ -41,6 +41,26 @@ func firstUniqChar(s string) int {
 	}
 
 	return res
+}
+
+// Complexity
+// - time O(n)
+// - memory O(n)
+func firstUniqChar3(s string) int {
+	runes := []rune(s)
+	table := make(map[rune]int)
+
+	for _, r := range runes {
+		table[r]++
+	}
+
+	for pos, r := range runes {
+		if table[r] == 1 {
+			return pos
+		}
+	}
+
+	return -1
 }
 
 // better solution

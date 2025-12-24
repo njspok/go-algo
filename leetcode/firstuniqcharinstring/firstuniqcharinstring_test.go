@@ -21,7 +21,8 @@ func Test(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.str, func(t *testing.T) {
-			require.Equal(t, test.pos, firstUniqChar(test.str))
+			//require.Equal(t, test.pos, firstUniqChar(test.str))
+			require.Equal(t, test.pos, firstUniqChar3(test.str))
 		})
 	}
 }
