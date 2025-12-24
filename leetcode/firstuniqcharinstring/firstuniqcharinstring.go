@@ -42,3 +42,24 @@ func firstUniqChar(s string) int {
 
 	return res
 }
+
+// better solution
+// https://leetcode.com/problems/first-unique-character-in-a-string/solutions/7182220/go-simple-solution-100-by-ducnta-nq35/
+//func firstUniqChar2(s string) int {
+//	// Only 26 lowercase letters
+//	var freq [26]int
+//
+//	// Count frequency of each character
+//	for i := 0; i < len(s); i++ {
+//		freq[s[i]-'a']++
+//	}
+//
+//	// Find first character with count 1
+//	for i := 0; i < len(s); i++ {
+//		if freq[s[i]-'a'] == 1 {
+//			return i
+//		}
+//	}
+//
+//	return -1
+//}
