@@ -22,6 +22,7 @@ func Test(t *testing.T) {
 		for _, test := range tests {
 			t.Run(fmt.Sprintf("%+v", test.prices), func(t *testing.T) {
 				require.Equal(t, test.result, maxProfit(test.prices))
+				require.Equal(t, test.result, maxProfitTrivial(test.prices))
 			})
 		}
 	})
